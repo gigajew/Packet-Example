@@ -1,10 +1,6 @@
 ﻿using ConsoleApp17.Net;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp17.Utils
 {
@@ -13,7 +9,7 @@ namespace ConsoleApp17.Utils
 
         public void Serialize(Stream stream, Packet packet)
         {
-            stream.WriteByte((byte)( packet.Magic >> 24));
+            stream.WriteByte((byte)(packet.Magic >> 24));
             stream.WriteByte((byte)(packet.Magic >> 16));
             stream.WriteByte((byte)(packet.Magic >> 8));
             stream.WriteByte((byte)(packet.Magic));
@@ -22,7 +18,7 @@ namespace ConsoleApp17.Utils
             stream.WriteByte((byte)((int)packet.Type >> 16));
             stream.WriteByte((byte)((int)packet.Type >> 8));
             stream.WriteByte((byte)((int)packet.Type));
-            
+
             stream.WriteByte((byte)(packet.Length >> 24));
             stream.WriteByte((byte)(packet.Length >> 16));
             stream.WriteByte((byte)(packet.Length >> 8));
@@ -32,12 +28,12 @@ namespace ConsoleApp17.Utils
         }
 
 #pragma warning disable CS0675
-        public Packet Deserialize(Stream stream )
+        public Packet Deserialize(Stream stream)
         {
             Packet packet = new Packet();
 
             int magic = stream.ReadByte() << 24 | stream.ReadByte() << 16 | stream.ReadByte() << 8 | stream.ReadByte();
-            if (magic != Constants.Magic )
+            if (magic != Constants.Magic)
                 throw new InvalidDataException("magic");
 
             packet.Magic = magic;
@@ -48,7 +44,7 @@ namespace ConsoleApp17.Utils
 
             packet.Type = (PacketType)type;
 
-            int length =  stream.ReadByte() << 24 | stream.ReadByte() << 16 | stream.ReadByte() << 8 | stream.ReadByte();
+            int length = stream.ReadByte() << 24 | stream.ReadByte() << 16 | stream.ReadByte() << 8 | stream.ReadByte();
 
             packet.Length = length;
 
@@ -60,6 +56,9 @@ namespace ConsoleApp17.Utils
 
                 packet.Data = buffer;
             }
+
+            if (!packet.IsValid())
+                throw new Exception("corrupt packet");
 
             return packet;
         }

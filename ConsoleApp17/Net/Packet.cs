@@ -20,5 +20,19 @@ namespace ConsoleApp17.Net
             Length = data.Length;
             Data = data;
         }
+
+        public bool IsValid()
+        {
+            if (Data != null && Data.Length != Length)
+                return false;
+
+            if (Magic <= 0)
+                return false;
+
+            if (Data != null && Data.Length == 0)
+                return false;
+
+            return true;
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace ConsoleApp17
             MemoryStream memory = new MemoryStream();
 
             // create a packet
-            Packet packet = new Packet(PacketType.ConnectionRequest, Encoding.UTF8.GetBytes("hello, server"));
+            Packet packet = new Packet(PacketType.Message, Encoding.UTF8.GetBytes("hello, server"));
 
             // serialize the packet to the memorystream
             PacketSerializer serializer = new PacketSerializer();
